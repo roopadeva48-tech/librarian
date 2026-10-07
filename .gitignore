@@ -1,0 +1,201 @@
+# =============================================================================
+# KSRCE Library RAG Chatbot — .gitignore
+# Stack: Next.js + TypeScript (frontend) | FastAPI + Python (backend)
+#        PostgreSQL | Redis | MinIO | Celery | Docker
+# PRD security rule: never commit secrets, dumps, uploads, or prod config.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# SECRETS & ENVIRONMENT  (PRD: store secrets outside Git)
+# -----------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+secrets/
+secret_manager/
+
+# -----------------------------------------------------------------------------
+# PYTHON / BACKEND
+# -----------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+pip-wheel-metadata/
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.env/
+.python-version
+
+# Testing & coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.coveragerc
+.tox/
+.nox/
+nosetests.xml
+junit*.xml
+
+# Type checking
+.mypy_cache/
+.pytype/
+.pyre/
+.dmypy.json
+
+# Alembic local override (keep versions/ committed)
+backend/migrations/alembic.ini.local
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# Jupyter (if used for evals/analysis)
+.ipynb_checkpoints/
+*.ipynb
+
+# -----------------------------------------------------------------------------
+# NODE / FRONTEND
+# -----------------------------------------------------------------------------
+node_modules/
+frontend/node_modules/
+.npm
+.yarn/
+.pnp.*
+.yarnrc.yml
+
+# Next.js build output
+frontend/.next/
+frontend/out/
+.next/
+out/
+
+# Turbo
+.turbo/
+
+# Build artifacts
+frontend/build/
+dist/
+*.tsbuildinfo
+next-env.d.ts
+
+# Testing
+coverage/
+.nyc_output/
+
+# -----------------------------------------------------------------------------
+# DATABASE  (PRD: never commit database dumps or exported data)
+# -----------------------------------------------------------------------------
+*.sql
+*.dump
+*.pg_dump
+*.sqlite
+*.sqlite3
+*.db
+db_backup/
+db_dumps/
+pgdata/
+
+# -----------------------------------------------------------------------------
+# UPLOADED LIBRARY FILES & OBJECT STORAGE
+# (PRD: never commit uploaded library files, originals, or OCR output)
+# -----------------------------------------------------------------------------
+uploads/
+originals/
+page_images/
+ocr_output/
+minio_data/
+storage/
+media/
+*.pdf
+*.epub
+*.djvu
+*.tiff
+*.tif
+
+# -----------------------------------------------------------------------------
+# LOGS & TELEMETRY
+# -----------------------------------------------------------------------------
+*.log
+*.log.*
+logs/
+log/
+*.out
+*.err
+
+# -----------------------------------------------------------------------------
+# DOCKER / INFRA LOCAL STATE
+# (keep Dockerfiles and compose YAMLs; ignore local runtime volumes)
+# -----------------------------------------------------------------------------
+infra/compose/.env
+infra/compose/.env.*
+docker-volumes/
+.docker/
+
+# Terraform state & secrets  (keep *.tf source; never commit state)
+infra/terraform/.terraform/
+infra/terraform/*.tfstate
+infra/terraform/*.tfstate.*
+infra/terraform/*.tfvars
+!infra/terraform/*.tfvars.example
+infra/terraform/crash.log
+
+# -----------------------------------------------------------------------------
+# EVALUATION & RESEARCH DATA
+# (keep question templates; exclude labelled answer exports with PII)
+# -----------------------------------------------------------------------------
+evals/outputs/
+evals/results/
+evals/*.jsonl
+evals/*.csv
+
+# -----------------------------------------------------------------------------
+# EDITOR / IDE
+# -----------------------------------------------------------------------------
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json.example
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+.editorconfig.local
+
+# -----------------------------------------------------------------------------
+# OS
+# -----------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# -----------------------------------------------------------------------------
+# MISC
+# -----------------------------------------------------------------------------
+*.bak
+*.tmp
+*.temp
+.cache/
+tmp/
+temp/

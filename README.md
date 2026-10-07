@@ -66,6 +66,67 @@ The system is designed for authenticated use by users with approved college emai
 
 PostgreSQL with pgvector is recommended for the first production version because it combines relational metadata, access permissions, audit data, full-text search, and vector search in one manageable system. A dedicated vector database such as Qdrant can be introduced later if the collection or traffic becomes large enough to require independent scaling.
 
+## Repository structure
+
+This is a single monorepo with a clear `frontend/` and `backend/` split. Each team member has a primary ownership area; shared infrastructure, tests, and documentation live at the root.
+
+```
+librarian/
+│
+├── frontend/                  ← Devaroopa E (Next.js web app)
+│   ├── app/                   # App Router pages and layouts
+│   ├── components/
+│   │   ├── chat/              # Chat UI, streaming answers, citations
+│   │   ├── auth/              # Login, MFA, account screens
+│   │   └── admin/             # Admin dashboard and source management
+│   ├── lib/                   # API client and utility functions
+│   ├── hooks/                 # Custom React hooks
+│   ├── types/                 # TypeScript interfaces and API types
+│   └── public/                # Static assets
+│
+├── backend/                   ← Abilash Kumar R (FastAPI + workers)
+│   ├── api/                   # FastAPI app and versioned routes (v1)
+│   ├── services/
+│   │   ├── retrieval/         # Hybrid search, RRF fusion, reranking
+│   │   ├── generation/        # LLM adapters, prompts, output validation
+│   │   ├── ingestion/         # Orchestration and stage state machine
+│   │   ├── extraction/        # PDF, EPUB, text, HTML parsers
+│   │   ├── ocr/               # OCR adapters and confidence handling
+│   │   ├── chunking/          # Structure-aware chunkers
+│   │   ├── embeddings/        # Embedding adapters and batch pipeline
+│   │   └── moderation/        # Input/output safety
+│   ├── workers/               # Celery/RQ tasks and scheduled jobs
+│   ├── migrations/            # Alembic database migrations
+│   ├── packages/
+│   │   ├── db/                # SQLAlchemy models and repositories
+│   │   ├── security/          # Argon2id, JWT, RBAC, CSRF
+│   │   ├── config/            # Typed environment configuration
+│   │   └── observability/     # Logs, metrics, traces, request IDs
+│   ├── prompts/               # Versioned prompt templates (no secrets)
+│   └── scripts/               # Import, backup, restore, reindex scripts
+│
+├── infra/                     # Shared DevOps (both members)
+│   ├── docker/                # Development Dockerfiles
+│   ├── compose/               # docker-compose for local environment
+│   ├── k8s/                   # Kubernetes manifests (future)
+│   └── terraform/             # Infrastructure as code (future)
+│
+├── tests/                     # Both members contribute
+│   ├── unit/
+│   ├── integration/
+│   ├── security/
+│   ├── retrieval/
+│   └── load/
+│
+├── evals/                     # Golden Q&A evaluation set
+├── docs/                      # Threat model, runbooks, data dictionary
+├── .env.example
+├── docker-compose.yml
+├── pyproject.toml             # Python/backend workspace config
+├── package.json               # Node/frontend workspace config
+└── README.md
+```
+
 ## Security principles
 
 - Login is required before using chat, search, source preview, or conversation history.
@@ -263,9 +324,12 @@ This repository contains the planning and product requirements for the KSRCE Lib
 
 ## Team
 
-- Abilash Kumar R
+| Member | Primary ownership |
+|---|---|
+| **Abilash Kumar R** | `backend/` — FastAPI, database, ingestion workers, retrieval, deployment, observability |
+| **Devaroopa E** | `frontend/` — Next.js UI, auth screens, admin workflows, evaluation dataset, documentation, security test cases |
 
-- Devaroopa E
+Both members review threat-model changes, database migrations, prompt changes, and production releases.
 
 ## References
 
